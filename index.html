@@ -6,9 +6,9 @@
     <title>ceba-projeto.github.io</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        body { background-color: #fff; display: flex; }
+        body { background-color: #fff; display: flex; overflow-x: hidden; }
 
-        /* LINHA SEPARADORA E BOTÃO */
+        /* BARRA LATERAL E LINHA SEPARADORA */
         .header-toggle {
             position: fixed;
             top: 0;
@@ -25,7 +25,7 @@
 
         .menu-icon { font-size: 35px; cursor: pointer; line-height: 1; }
 
-        /* SIDEBAR */
+        /* SIDEBAR (MENU ESCONDIDO) */
         .sidebar {
             height: 100vh;
             width: 250px;
@@ -44,49 +44,55 @@
         .sidebar.open { left: 0; }
 
         .foto-espaco {
-            width: 100px;
-            height: 100px;
-            border: 2px solid #000;
-            border-radius: 50%;
+            width: 100px; height: 100px;
+            border: 2px solid #000; border-radius: 50%;
             margin: 0 auto 20px auto;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            display: flex; align-items: center; justify-content: center;
             font-weight: bold;
         }
 
         .nome-barra {
-            text-align: center;
-            border-top: 1px solid #000;
-            border-bottom: 1px solid #000;
-            padding: 10px 0;
-            margin-bottom: 10px;
-            font-weight: bold;
-            text-transform: lowercase;
+            text-align: center; border-top: 1px solid #000; border-bottom: 1px solid #000;
+            padding: 10px 0; margin-bottom: 10px; font-weight: bold;
         }
 
         .link-interativo {
-            padding: 15px;
-            text-decoration: none;
-            color: #000;
-            border-bottom: 1px solid #eee;
-            text-align: center;
-            transition: 0.2s;
+            padding: 15px; text-decoration: none; color: #000;
+            border-bottom: 1px solid #eee; text-align: center; transition: 0.2s;
         }
 
         .link-interativo:hover { background-color: #f0f0f0; }
 
-        .main-content { margin-left: 60px; padding: 40px; flex-grow: 1; }
+        /* CONTEÚDO DA PÁGINA */
+        .main-content {
+            margin-left: 60px; padding: 40px; flex-grow: 1;
+            display: flex; flex-direction: column;
+            justify-content: center; align-items: center; height: 100vh;
+        }
+
+        /* CAIXA DE MENSAGEM OVAL */
+        .oval-input-container {
+            width: 85%; max-width: 500px;
+            border: 2px solid #000; border-radius: 50px;
+            padding: 5px; display: flex; align-items: center; margin-bottom: 20px;
+        }
+
+        .oval-input {
+            flex-grow: 1; border: none; padding: 15px 25px;
+            border-radius: 50px; font-size: 16px; outline: none;
+        }
+
+        .send-button {
+            background-color: #25D366; color: #fff; border: none;
+            padding: 15px 35px; border-radius: 30px;
+            font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s;
+        }
+
+        .send-button:hover { background-color: #128C7E; transform: scale(1.05); }
 
         .overlay {
-            display: none;
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.1);
-            z-index: 999;
+            display: none; position: fixed; top: 0; left: 0;
+            width: 100%; height: 100%; background: rgba(0,0,0,0.1); z-index: 999;
         }
         .overlay.active { display: block; }
     </style>
@@ -108,18 +114,27 @@
         <a href="#" class="link-interativo">Em breve</a>
         <a href="#" class="link-interativo">Em breve</a>
 
-        <a href="https://wa.me/5522999776700?text=Ola,%20eu%20gostaria%20de%20dar%20uma%20dica"target="_blank" class="link-interativo" style="font-weight: bold; color: #25D366;">WhatsApp</a>
+        <a href="https://wa.me/5522999776700?text=Ola,%20vim%20pelo%20seu%20site" target="_blank" class="link-interativo" style="font-weight: bold; color: #25D366;">WhatsApp Direct</a>
     </aside>
 
     <main class="main-content">
-        <h1>Conteúdo Principal</h1>
-        <p>Site ceba-projeto carregado.</p>
+        <div class="oval-input-container">
+            <input type="text" id="user-message" class="oval-input" placeholder="Escreva sua mensagem...">
+        </div>
+        <button class="send-button" onclick="sendWhatsAppMessage()">Enviar para o WhatsApp</button>
     </main>
 
     <script>
         function toggleMenu() {
             document.getElementById('sidebar').classList.toggle('open');
             document.getElementById('overlay').classList.toggle('active');
+        }
+
+        function sendWhatsAppMessage() {
+            const message = document.getElementById('user-message').value;
+            const phoneNumber = "5522999776700"; // NÚMERO ATUALIZADO
+            const encodedMessage = encodeURIComponent(message);
+            window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
         }
     </script>
 
