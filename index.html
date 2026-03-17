@@ -7,125 +7,115 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
 
-        body { display: flex; height: 100vh; background-color: #fff; overflow-x: hidden; }
+        body { background-color: #fff; overflow-x: hidden; }
 
-        /* BOTÃO PARA ABRIR O MENU (FIXO NO TOPO) */
-        .menu-toggle {
-            position: fixed;
-            top: 20px;
-            left: 20px;
-            z-index: 1000;
-            background: #000;
-            color: #fff;
-            border: none;
-            padding: 10px 15px;
+        /* ÍCONE DE MENU (AS 3 BARRINHAS) */
+        .menu-icon {
+            font-size: 30px;
             cursor: pointer;
-            font-weight: bold;
-            border-radius: 5px;
+            padding: 10px;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            z-index: 1000;
+            background: #fff;
+            border: 1px solid #000;
+            line-height: 1;
         }
 
-        /* SIDEBAR QUE ESCONDE */
+        /* BARRA LATERAL (SIDEBAR) */
         .sidebar {
-            width: 280px;
             height: 100vh;
-            background-color: #f0f0f0;
+            width: 250px;
+            position: fixed;
+            top: 0;
+            left: -250px; /* TOTALMENTE ESCONDIDO À ESQUERDA */
+            background-color: #fff;
             border-right: 2px solid #000;
+            transition: 0.3s ease; /* DESLIZAMENTO SUAVE */
+            z-index: 999;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            padding-top: 70px;
-            position: fixed;
-            left: -280px; /* COMEÇA ESCONDIDA */
-            transition: 0.4s ease; /* EFEITO DE DESLIZAR */
-            z-index: 999;
+            padding-top: 60px;
         }
 
-        /* QUANDO O MENU ESTÁ ATIVO */
-        .sidebar.active {
+        /* QUANDO O MENU ESTIVER ABERTO */
+        .sidebar.open {
             left: 0;
         }
 
-        .perfil-foto {
-            width: 120px;
-            height: 120px;
+        /* ITENS DENTRO DO MENU */
+        .foto-espaco {
+            width: 100px;
+            height: 100px;
             border: 2px solid #000;
             border-radius: 50%;
+            margin: 0 auto 20px auto;
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            margin-bottom: 20px;
         }
 
-        .nome-usuario {
-            width: 100%;
+        .nome-barra {
             text-align: center;
-            border-top: 2px solid #000;
-            border-bottom: 2px solid #000;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
             padding: 10px 0;
+            margin-bottom: 10px;
             font-weight: bold;
         }
-
-        .nav-links { width: 100%; display: flex; flex-direction: column; }
 
         .link-interativo {
             padding: 15px;
-            text-align: center;
             text-decoration: none;
             color: #000;
-            border-bottom: 1px solid #ccc;
-            transition: 0.3s;
+            border-bottom: 1px solid #eee;
+            text-align: center;
+            transition: 0.2s;
         }
 
-        .link-interativo:hover { background-color: #ddd; }
+        .link-interativo:hover {
+            background-color: #f0f0f0;
+        }
 
-        /* ÁREA DE CONTEÚDO */
-        .main-content {
-            flex-grow: 1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-left: 0;
-            transition: 0.4s;
+        /* FUNDO ESCURO QUANDO O MENU ABRE (OPCIONAL) */
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
             width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.2);
+            z-index: 998;
         }
+
+        .overlay.active { display: block; }
     </style>
 </head>
 <body>
 
-    <button class="menu-toggle" onclick="toggleMenu()">MENU ☰</button>
+    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
     <aside class="sidebar" id="sidebar">
-        <div class="perfil-foto">foto</div>
-        <div class="nome-usuario">antony</div>
+        <div class="foto-espaco">foto</div>
+        <div class="nome-barra">antony</div>
         
-        <nav class="nav-links">
-            <a href="#" class="link-interativo">interativo 1</a>
-            <a href="#" class="link-interativo">interativo 2</a>
-            <a href="#" class="link-interativo">interativo 3</a>
-            <a href="#" class="link-interativo">interativo 4</a>
-            <a href="#" class="link-interativo">interativo 5</a>
-            <a href="#" class="link-interativo">interativo 6</a>
-            <a href="#" class="link-interativo">interativo 7</a>
-        </nav>
+        <a href="#" class="link-interativo">interativo</a>
+        <a href="#" class="link-interativo">interativo</a>
+        <a href="#" class="link-interativo">interativo</a>
+        <a href="#" class="link-interativo">interativo</a>
+        <a href="#" class="link-interativo">interativo</a>
+        <a href="#" class="link-interativo">interativo</a>
     </aside>
-
-    <main class="main-content">
-        <h2>Clique no botão para ver o menu</h2>
-    </main>
 
     <script>
         function toggleMenu() {
-            const sidebar = document.getElementById('sidebar');
-            sidebar.classList.toggle('active');
-            
-            // Mudar o texto do botão
-            const btn = document.querySelector('.menu-toggle');
-            if(sidebar.classList.contains('active')) {
-                btn.innerHTML = 'FECHAR ✕';
-            } else {
-                btn.innerHTML = 'MENU ☰';
-            }
+            document.getElementById('sidebar').classList.toggle('open');
+            document.getElementById('overlay').classList.toggle('active');
         }
     </script>
 
