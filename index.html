@@ -8,7 +8,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background-color: #fff; display: flex; overflow-x: hidden; }
 
-        /* LINHA SEPARADORA E BOTÃO */
+        /* BARRA LATERAL E LINHA SEPARADORA */
         .header-toggle {
             position: fixed;
             top: 0;
@@ -72,7 +72,7 @@
 
         /* ÁREA DO MENSAGEIRO (ESCONDIDA POR PADRÃO) */
         #messenger-area {
-            display: none; 
+            display: none; /* COMEÇA ESCONDIDO */
             flex-direction: column;
             align-items: center;
             width: 100%;
@@ -95,7 +95,7 @@
             font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s;
         }
 
-        .send-button:hover { background-color: #128C7E; }
+        .send-button:hover { background-color: #128C7E; transform: scale(1.05); }
 
         .overlay {
             display: none; position: fixed; top: 0; left: 0;
@@ -116,22 +116,23 @@
         <div class="foto-espaco">foto</div>
         <div class="nome-barra">antony</div>
         
-        <div class="link-interativo">Em breve</div>
-        <div class="link-interativo">Em breve</div>
-        <div class="link-interativo">Em breve</div>
-        <div class="link-interativo">Em breve</div>
+        <div class="link-interativo" onclick="showMessenger()">Enviar Mensagem</div>
+        
+        <a href="#" class="link-interativo">Em breve</a>
+        <a href="#" class="link-interativo">Em breve</a>
+        <a href="#" class="link-interativo">Em breve</a>
 
-        <div class="link-interativo" onclick="showMessenger()" style="font-weight: bold; color: #25D366; border-top: 2px solid #000;">WhatsApp</div>
+        <a href="https://wa.me/5522999776700?text=Ola" target="_blank" class="link-interativo" style="font-weight: bold; color: #25D366;">WhatsApp Direct</a>
     </aside>
 
     <main class="main-content">
-        <h2 id="welcome-text">Bem-vindo ao ceba-projeto</h2>
-        
+        <h2 id="welcome-msg">Selecione uma opção no menu</h2>
+
         <div id="messenger-area">
             <div class="oval-input-container">
-                <input type="text" id="user-message" class="oval-input" placeholder="Digite sua mensagem para o Whats...">
+                <input type="text" id="user-message" class="oval-input" placeholder="Escreva sua mensagem...">
             </div>
-            <button class="send-button" onclick="sendWhatsAppMessage()">Enviar Agora</button>
+            <button class="send-button" onclick="sendWhatsAppMessage()">Enviar para o WhatsApp</button>
         </div>
     </main>
 
@@ -141,11 +142,11 @@
             document.getElementById('overlay').classList.toggle('active');
         }
 
+        // MOSTRAR O MENSAGEIRO
         function showMessenger() {
-            // Esconde o texto de boas-vindas e mostra a caixa oval
-            document.getElementById('welcome-text').style.display = 'none';
             document.getElementById('messenger-area').style.display = 'flex';
-            toggleMenu(); // Fecha o menu lateral
+            document.getElementById('welcome-msg').style.display = 'none';
+            toggleMenu(); // Fecha o menu automaticamente ao selecionar
         }
 
         function sendWhatsAppMessage() {
