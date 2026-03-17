@@ -9,14 +9,13 @@
 
         body { background-color: #fff; display: flex; }
 
-        /* ÁREA DO BOTÃO COM A LINHA SEPARADORA */
         .header-toggle {
             position: fixed;
             top: 0;
             left: 0;
-            width: 60px; /* Largura da área do botão */
+            width: 60px;
             height: 100vh;
-            border-right: 2px solid #000; /* A LINHA QUE VOCÊ PEDIU */
+            border-right: 2px solid #000;
             display: flex;
             justify-content: center;
             padding-top: 15px;
@@ -30,7 +29,6 @@
             line-height: 1;
         }
 
-        /* BARRA LATERAL (SIDEBAR) */
         .sidebar {
             height: 100vh;
             width: 250px;
@@ -46,12 +44,10 @@
             padding-top: 60px;
         }
 
-        /* QUANDO O MENU ESTIVER ABERTO */
         .sidebar.open {
             left: 0;
         }
 
-        /* ITENS DO MENU */
         .foto-espaco {
             width: 100px;
             height: 100px;
@@ -85,14 +81,12 @@
 
         .link-interativo:hover { background-color: #f0f0f0; }
 
-        /* ÁREA DE CONTEÚDO PRINCIPAL */
         .main-content {
-            margin-left: 60px; /* Abre espaço para não ficar atrás da linha */
+            margin-left: 60px;
             padding: 40px;
             flex-grow: 1;
         }
 
-        /* FUNDO ESCURO AO ABRIR */
         .overlay {
             display: none;
             position: fixed;
@@ -118,16 +112,17 @@
         <div class="foto-espaco">foto</div>
         <div class="nome-barra">antony</div>
         
-        <a href="#" class="em breve">interativo</a>
-        <a href="#" class="em breve">interativo</a>
-        <a href="#" class="em breve">interativo</a>
-        <a href="#" class="em breve">interativo</a>
-        <a href="#" class="<a href="https://wa.me/5522981584972?text=Ola,%20vim%20pelo%20seu%20site" target="_blank" class="link-interativo">Falar no WhatsApp</a>"">interativo</a>
+        <a href="https://wa.me/5522981584972?text=Ola,%20vim%20pelo%20seu%20site" target="_blank" class="link-interativo">WhatsApp</a>
+        
+        <a href="#" class="link-interativo">Em breve</a>
+        <a href="#" class="link-interativo">Em breve</a>
+        <a href="#" class="link-interativo">Em breve</a>
+        <a href="#" class="link-interativo">Em breve</a>
     </aside>
 
     <main class="main-content">
         <h1>Conteúdo do Site</h1>
-        <p>A linha agora separa o botão de menu da área principal.</p>
+        <p>Selecione uma opção no menu.</p>
     </main>
 
     <script>
