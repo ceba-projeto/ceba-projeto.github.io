@@ -8,7 +8,7 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
         body { background-color: #fff; display: flex; overflow-x: hidden; }
 
-        /* BARRA LATERAL E LINHA SEPARADORA */
+        /* LINHA SEPARADORA E BOTÃO */
         .header-toggle {
             position: fixed;
             top: 0;
@@ -25,7 +25,7 @@
 
         .menu-icon { font-size: 35px; cursor: pointer; line-height: 1; }
 
-        /* SIDEBAR (MENU ESCONDIDO) */
+        /* SIDEBAR */
         .sidebar {
             height: 100vh;
             width: 250px;
@@ -58,7 +58,7 @@
 
         .link-interativo {
             padding: 15px; text-decoration: none; color: #000;
-            border-bottom: 1px solid #eee; text-align: center; transition: 0.2s;
+            border-bottom: 1px solid #eee; text-align: center; cursor: pointer; transition: 0.2s;
         }
 
         .link-interativo:hover { background-color: #f0f0f0; }
@@ -70,7 +70,14 @@
             justify-content: center; align-items: center; height: 100vh;
         }
 
-        /* CAIXA DE MENSAGEM OVAL */
+        /* ÁREA DO MENSAGEIRO (ESCONDIDA POR PADRÃO) */
+        #messenger-area {
+            display: none; 
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+
         .oval-input-container {
             width: 85%; max-width: 500px;
             border: 2px solid #000; border-radius: 50px;
@@ -88,7 +95,7 @@
             font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s;
         }
 
-        .send-button:hover { background-color: #128C7E; transform: scale(1.05); }
+        .send-button:hover { background-color: #128C7E; }
 
         .overlay {
             display: none; position: fixed; top: 0; left: 0;
@@ -109,19 +116,23 @@
         <div class="foto-espaco">foto</div>
         <div class="nome-barra">antony</div>
         
-        <a href="#" class="link-interativo">Em breve</a>
-        <a href="#" class="link-interativo">Em breve</a>
-        <a href="#" class="link-interativo">Em breve</a>
-        <a href="#" class="link-interativo">Em breve</a>
+        <div class="link-interativo">Em breve</div>
+        <div class="link-interativo">Em breve</div>
+        <div class="link-interativo">Em breve</div>
+        <div class="link-interativo">Em breve</div>
 
-        <a href="https://wa.me/5522999776700?text=Ola,%20vim%20pelo%20seu%20site" target="_blank" class="link-interativo" style="font-weight: bold; color: #25D366;">WhatsApp Direct</a>
+        <div class="link-interativo" onclick="showMessenger()" style="font-weight: bold; color: #25D366; border-top: 2px solid #000;">WhatsApp</div>
     </aside>
 
     <main class="main-content">
-        <div class="oval-input-container">
-            <input type="text" id="user-message" class="oval-input" placeholder="Escreva sua mensagem...">
+        <h2 id="welcome-text">Bem-vindo ao ceba-projeto</h2>
+        
+        <div id="messenger-area">
+            <div class="oval-input-container">
+                <input type="text" id="user-message" class="oval-input" placeholder="Digite sua mensagem para o Whats...">
+            </div>
+            <button class="send-button" onclick="sendWhatsAppMessage()">Enviar Agora</button>
         </div>
-        <button class="send-button" onclick="sendWhatsAppMessage()">Enviar para o WhatsApp</button>
     </main>
 
     <script>
@@ -130,9 +141,16 @@
             document.getElementById('overlay').classList.toggle('active');
         }
 
+        function showMessenger() {
+            // Esconde o texto de boas-vindas e mostra a caixa oval
+            document.getElementById('welcome-text').style.display = 'none';
+            document.getElementById('messenger-area').style.display = 'flex';
+            toggleMenu(); // Fecha o menu lateral
+        }
+
         function sendWhatsAppMessage() {
             const message = document.getElementById('user-message').value;
-            const phoneNumber = "5522999776700"; // NÚMERO ATUALIZADO
+            const phoneNumber = "5522999776700";
             const encodedMessage = encodeURIComponent(message);
             window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
         }
