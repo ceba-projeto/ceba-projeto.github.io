@@ -3,32 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Site - Layout Sidebar</title>
+    <title>ceba-projeto.github.io</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
+
+        body { display: flex; height: 100vh; background-color: #fff; overflow-x: hidden; }
+
+        /* BOTÃO PARA ABRIR O MENU (FIXO NO TOPO) */
+        .menu-toggle {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 1000;
+            background: #000;
+            color: #fff;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            font-weight: bold;
+            border-radius: 5px;
         }
 
-        body {
-            display: flex;
-            height: 100vh;
-            background-color: #ffffff;
-        }
-
-        /* BARRA LATERAL (SIDEBAR) */
+        /* SIDEBAR QUE ESCONDE */
         .sidebar {
-            width: 250px;
+            width: 280px;
+            height: 100vh;
+            background-color: #f0f0f0;
             border-right: 2px solid #000;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding-top: 20px;
+            padding-top: 70px;
+            position: fixed;
+            left: -280px; /* COMEÇA ESCONDIDA */
+            transition: 0.4s ease; /* EFEITO DE DESLIZAR */
+            z-index: 999;
         }
 
-        /* O CÍRCULO DA FOTO */
+        /* QUANDO O MENU ESTÁ ATIVO */
+        .sidebar.active {
+            left: 0;
+        }
+
         .perfil-foto {
             width: 120px;
             height: 120px;
@@ -38,11 +54,9 @@
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            text-transform: uppercase;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
-        /* NOME ABAIXO DA FOTO */
         .nome-usuario {
             width: 100%;
             text-align: center;
@@ -50,71 +64,70 @@
             border-bottom: 2px solid #000;
             padding: 10px 0;
             font-weight: bold;
-            text-transform: lowercase;
         }
 
-        /* LINKS CLICÁVEIS (INTERATIVO) */
-        .menu-links {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-        }
+        .nav-links { width: 100%; display: flex; flex-direction: column; }
 
         .link-interativo {
-            width: 100%;
             padding: 15px;
             text-align: center;
             text-decoration: none;
             color: #000;
-            border-bottom: 1px solid #000;
-            font-weight: 500;
+            border-bottom: 1px solid #ccc;
             transition: 0.3s;
         }
 
-        /* Efeito de clique/passar o mouse */
-        .link-interativo:hover {
-            background-color: #f0f0f0;
-            padding-left: 25px; /* Pequeno efeito de movimento */
-        }
+        .link-interativo:hover { background-color: #ddd; }
 
-        /* ÁREA DE CONTEÚDO (DIREITA) */
-        .conteudo-principal {
+        /* ÁREA DE CONTEÚDO */
+        .main-content {
             flex-grow: 1;
-            padding: 40px;
             display: flex;
             justify-content: center;
             align-items: center;
-            color: #ccc;
+            padding-left: 0;
+            transition: 0.4s;
+            width: 100%;
         }
     </style>
 </head>
 <body>
 
-    <aside class="sidebar">
-        <div class="perfil-foto">
-            foto
-        </div>
+    <button class="menu-toggle" onclick="toggleMenu()">MENU ☰</button>
 
-        <div class="nome-usuario">
-            antony
-        </div>
-
-        <nav class="menu-links">
-            <a href="#" class="link-interativo">interativo</a>
-            <a href="#" class="link-interativo">interativo</a>
-            <a href="#" class="link-interativo">interativo</a>
-            <a href="#" class="link-interativo">interativo</a>
-            <a href="#" class="link-interativo">interativo</a>
-            <a href="#" class="link-interativo">interativo</a>
-            <a href="#" class="link-interativo">interativo</a>
-            <a href="#" class="link-interativo">interativo</a>
-            <a href="#" class="link-interativo">interativo</a>
+    <aside class="sidebar" id="sidebar">
+        <div class="perfil-foto">foto</div>
+        <div class="nome-usuario">antony</div>
+        
+        <nav class="nav-links">
+            <a href="#" class="link-interativo">interativo 1</a>
+            <a href="#" class="link-interativo">interativo 2</a>
+            <a href="#" class="link-interativo">interativo 3</a>
+            <a href="#" class="link-interativo">interativo 4</a>
+            <a href="#" class="link-interativo">interativo 5</a>
+            <a href="#" class="link-interativo">interativo 6</a>
+            <a href="#" class="link-interativo">interativo 7</a>
         </nav>
     </aside>
 
-    <main class="conteudo-principal">
-        <h1>Área de Conteúdo</h1>
+    <main class="main-content">
+        <h2>Clique no botão para ver o menu</h2>
     </main>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
+            
+            // Mudar o texto do botão
+            const btn = document.querySelector('.menu-toggle');
+            if(sidebar.classList.contains('active')) {
+                btn.innerHTML = 'FECHAR ✕';
+            } else {
+                btn.innerHTML = 'MENU ☰';
+            }
+        }
+    </script>
 
 </body>
 </html>
