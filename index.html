@@ -7,19 +7,26 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
 
-        body { background-color: #fff; overflow-x: hidden; }
+        body { background-color: #fff; display: flex; }
 
-        /* ÍCONE DE MENU (AS 3 BARRINHAS) */
-        .menu-icon {
-            font-size: 30px;
-            cursor: pointer;
-            padding: 10px;
+        /* ÁREA DO BOTÃO COM A LINHA SEPARADORA */
+        .header-toggle {
             position: fixed;
-            top: 10px;
-            left: 10px;
-            z-index: 1000;
+            top: 0;
+            left: 0;
+            width: 60px; /* Largura da área do botão */
+            height: 100vh;
+            border-right: 2px solid #000; /* A LINHA QUE VOCÊ PEDIU */
+            display: flex;
+            justify-content: center;
+            padding-top: 15px;
             background: #fff;
-            border: 1px solid #000;
+            z-index: 1001;
+        }
+
+        .menu-icon {
+            font-size: 35px;
+            cursor: pointer;
             line-height: 1;
         }
 
@@ -29,11 +36,11 @@
             width: 250px;
             position: fixed;
             top: 0;
-            left: -250px; /* TOTALMENTE ESCONDIDO À ESQUERDA */
+            left: -250px; 
             background-color: #fff;
             border-right: 2px solid #000;
-            transition: 0.3s ease; /* DESLIZAMENTO SUAVE */
-            z-index: 999;
+            transition: 0.3s ease;
+            z-index: 1000;
             display: flex;
             flex-direction: column;
             padding-top: 60px;
@@ -44,7 +51,7 @@
             left: 0;
         }
 
-        /* ITENS DENTRO DO MENU */
+        /* ITENS DO MENU */
         .foto-espaco {
             width: 100px;
             height: 100px;
@@ -64,6 +71,7 @@
             padding: 10px 0;
             margin-bottom: 10px;
             font-weight: bold;
+            text-transform: lowercase;
         }
 
         .link-interativo {
@@ -75,11 +83,16 @@
             transition: 0.2s;
         }
 
-        .link-interativo:hover {
-            background-color: #f0f0f0;
+        .link-interativo:hover { background-color: #f0f0f0; }
+
+        /* ÁREA DE CONTEÚDO PRINCIPAL */
+        .main-content {
+            margin-left: 60px; /* Abre espaço para não ficar atrás da linha */
+            padding: 40px;
+            flex-grow: 1;
         }
 
-        /* FUNDO ESCURO QUANDO O MENU ABRE (OPCIONAL) */
+        /* FUNDO ESCURO AO ABRIR */
         .overlay {
             display: none;
             position: fixed;
@@ -87,16 +100,17 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.2);
-            z-index: 998;
+            background: rgba(0,0,0,0.1);
+            z-index: 999;
         }
-
         .overlay.active { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    <div class="header-toggle">
+        <div class="menu-icon" onclick="toggleMenu()">☰</div>
+    </div>
 
     <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
 
@@ -109,8 +123,12 @@
         <a href="#" class="link-interativo">interativo</a>
         <a href="#" class="link-interativo">interativo</a>
         <a href="#" class="link-interativo">interativo</a>
-        <a href="#" class="link-interativo">interativo</a>
     </aside>
+
+    <main class="main-content">
+        <h1>Conteúdo do Site</h1>
+        <p>A linha agora separa o botão de menu da área principal.</p>
+    </main>
 
     <script>
         function toggleMenu() {
