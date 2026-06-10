@@ -1,159 +1,174 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ceba-projeto.github.io</title>
+    <title>Para Giovana</title>
     <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: sans-serif; }
-        body { background-color: #fff; display: flex; overflow-x: hidden; }
-
-        /* BARRA LATERAL E LINHA SEPARADORA */
-        .header-toggle {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 60px;
-            height: 100vh;
-            border-right: 2px solid #000;
-            display: flex;
-            justify-content: center;
-            padding-top: 15px;
-            background: #fff;
-            z-index: 1001;
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .menu-icon { font-size: 35px; cursor: pointer; line-height: 1; }
-
-        /* SIDEBAR */
-        .sidebar {
-            height: 100vh;
-            width: 250px;
-            position: fixed;
-            top: 0;
-            left: -250px; 
-            background-color: #fff;
-            border-right: 2px solid #000;
-            transition: 0.3s ease;
-            z-index: 1000;
-            display: flex;
-            flex-direction: column;
-            padding-top: 60px;
+        body {
+            background-color: #f9f0f6;
+            color: #333;
+            overflow-x: hidden;
         }
 
-        .sidebar.open { left: 0; }
-
-        .foto-espaco {
-            width: 100px; height: 100px;
-            border: 2px solid #000; border-radius: 50%;
-            margin: 0 auto 20px auto;
-            display: flex; align-items: center; justify-content: center;
+        /* Menu Retrátil */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #ff4d79;
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            z-index: 100;
             font-weight: bold;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
         }
 
-        .nome-barra {
-            text-align: center; border-top: 1px solid #000; border-bottom: 1px solid #000;
-            padding: 10px 0; margin-bottom: 10px; font-weight: bold;
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -250px;
+            width: 250px;
+            height: 100%;
+            background: #fff;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            padding: 80px 20px 20px 20px;
+            z-index: 99;
         }
 
-        .link-interativo {
-            padding: 15px; text-decoration: none; color: #000;
-            border-bottom: 1px solid #eee; text-align: center; cursor: pointer; transition: 0.2s;
+        .sidebar.active {
+            right: 0;
         }
 
-        .link-interativo:hover { background-color: #f0f0f0; }
-
-        /* CONTEÚDO DA PÁGINA */
-        .main-content {
-            margin-left: 60px; padding: 40px; flex-grow: 1;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center; height: 100vh;
+        .sidebar a {
+            display: block;
+            color: #333;
+            text-decoration: none;
+            padding: 15px 10px;
+            border-bottom: 1px solid #eee;
+            font-weight: 500;
         }
 
-        /* ÁREA DO MENSAGEIRO (ESCONDIDA POR PADRÃO) */
-        #messenger-area {
-            display: none; /* COMEÇA ESCONDIDO */
-            flex-direction: column;
-            align-items: center;
+        .sidebar a:hover {
+            color: #ff4d79;
+        }
+
+        /* Conteúdo Principal */
+        .container {
+            max-width: 800px;
+            margin: 80px auto;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .card {
+            background: white;
+            padding: 40px 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+        }
+
+        h1 {
+            color: #ff4d79;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        p {
+            font-size: 1.1rem;
+            line-height: 1.8;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        /* Área de Mensagem Interativa */
+        .input-group {
+            margin-top: 30px;
+        }
+
+        textarea {
             width: 100%;
+            height: 100px;
+            padding: 15px;
+            border: 2px solid #ffd6e0;
+            border-radius: 10px;
+            resize: none;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
         }
 
-        .oval-input-container {
-            width: 85%; max-width: 500px;
-            border: 2px solid #000; border-radius: 50px;
-            padding: 5px; display: flex; align-items: center; margin-bottom: 20px;
+        textarea:focus {
+            border-color: #ff4d79;
         }
 
-        .oval-input {
-            flex-grow: 1; border: none; padding: 15px 25px;
-            border-radius: 50px; font-size: 16px; outline: none;
+        .send-btn {
+            background: #ff4d79;
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 1rem;
+            font-weight: bold;
+            border-radius: 25px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: background 0.2s;
         }
 
-        .send-button {
-            background-color: #25D366; color: #fff; border: none;
-            padding: 15px 35px; border-radius: 30px;
-            font-size: 18px; font-weight: bold; cursor: pointer; transition: 0.2s;
+        .send-btn:hover {
+            background: #e03a65;
         }
-
-        .send-button:hover { background-color: #128C7E; transform: scale(1.05); }
-
-        .overlay {
-            display: none; position: fixed; top: 0; left: 0;
-            width: 100%; height: 100%; background: rgba(0,0,0,0.1); z-index: 999;
-        }
-        .overlay.active { display: block; }
     </style>
 </head>
 <body>
 
-    <div class="header-toggle">
-        <div class="menu-icon" onclick="toggleMenu()">☰</div>
-    </div>
+    <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
 
-    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+    <nav class="sidebar" id="sidebar">
+        <a href="#inicio" onclick="toggleMenu()">Início</a>
+        <a href="#mensagem" onclick="toggleMenu()">Enviar Mensagem</a>
+    </nav>
 
-    <aside class="sidebar" id="sidebar">
-        <div class="foto-espaco">foto</div>
-        <div class="nome-barra">antony</div>
-        
-        <div class="link-interativo" onclick="showMessenger()">Enviar Mensagem</div>
-        
-        <a href="#" class="link-interativo">Em breve</a>
-        <a href="#" class="link-interativo">Em breve</a>
-        <a href="#" class="link-interativo">Em breve</a>
-
-        <a href="https://wa.me/?text=Ola" target="_blank" class="link-interativo" style="font-weight: bold; color: #25D366;">WhatsApp Direct</a>
-    </aside>
-
-    <main class="main-content">
-        <h2 id="welcome-msg">Selecione uma opção no menu</h2>
-
-        <div id="messenger-area">
-            <div class="oval-input-container">
-                <input type="text" id="user-message" class="oval-input" placeholder="Escreva sua mensagem...">
+    <main class="container" id="inicio">
+        <div class="card">
+            <h1>Para Giovana</h1>
+            <p>Escreva aqui o seu texto personalizado para ela. Seja direto, sincero e evite clichês genéricos. Foque no que torna a sua consideração por ela real e relevante.</p>
+            
+            <div class="input-group" id="mensagem">
+                <textarea id="userMessage" placeholder="Escreva uma resposta ou mensagem aqui..."></textarea>
+                <button class="send-btn" onclick="enviarMensagem()">Enviar Mensagem</button>
             </div>
-            <button class="send-button" onclick="sendWhatsAppMessage()">Enviar para o WhatsApp</button>
         </div>
     </main>
 
     <script>
         function toggleMenu() {
-            document.getElementById('sidebar').classList.toggle('open');
-            document.getElementById('overlay').classList.toggle('active');
+            const sidebar = document.getElementById('sidebar');
+            sidebar.classList.toggle('active');
         }
 
-        // MOSTRAR O MENSAGEIRO
-        function showMessenger() {
-            document.getElementById('messenger-area').style.display = 'flex';
-            document.getElementById('welcome-msg').style.display = 'none';
-            toggleMenu(); // Fecha o menu automaticamente ao selecionar
-        }
-
-        function sendWhatsAppMessage() {
-            const message = document.getElementById('user-message').value;
-            const phoneNumber = "5522999776700";
-            const encodedMessage = encodeURIComponent(message);
-            window.open(`https://wa.me/${phoneNumber}?text=${encodedMessage}`, '_blank');
+        function enviarMensagem() {
+            const mensagem = document.getElementById('userMessage').value;
+            if (!mensagem.trim()) {
+                alert('Digite uma mensagem antes de enviar.');
+                return;
+            }
+            
+            // Configuração para redirecionar o texto direto para o seu WhatsApp
+            const seuNumero = "5522999999999"; // Substitua pelo seu número com DDD (apenas números)
+            const textoFormatado = encodeURIComponent("Mensagem da Giovana pelo site: " + mensagem);
+            window.open(`https://wa.me/${seuNumero}?text=${textoFormatado}`, '_blank');
         }
     </script>
 
