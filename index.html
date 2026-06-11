@@ -45,8 +45,8 @@
         <div id="bloco-quiz">
             <h1 id="texto-quiz"></h1>
             <div class="btn-container" style="position: static;">
-                <button class="btn btn-sim" onclick="responderQuiz()">Sim</button>
-                <button class="btn btn-nao" onclick="responderQuiz()" style="position: static; background-color: #38384f;">Não</button>
+                <button class="btn btn-sim" onclick="responderQuiz('Sim')">Sim</button>
+                <button class="btn btn-nao" onclick="responderQuiz('Não')" style="position: static; background-color: #38384f;">Não</button>
             </div>
         </div>
 
@@ -65,7 +65,6 @@
 
         function fugir() {
             if (tentativas >= 10) {
-                // Quando cansar de fugir, inicia o quiz
                 iniciarQuiz();
                 return;
             }
@@ -89,7 +88,14 @@
             document.getElementById('texto-quiz').innerText = perguntasQuiz[0];
         }
 
-        function responderQuiz() {
+        function responderQuiz(resposta) {
+            // Se clicar em 'Sim' no quiz, reinicia tudo
+            if (resposta === 'Sim') {
+                reiniciar();
+                return;
+            }
+
+            // Se clicar em 'Não', segue o fluxo
             perguntaAtual++;
             if (perguntaAtual < perguntasQuiz.length) {
                 document.getElementById('texto-quiz').innerText = perguntasQuiz[perguntaAtual];
@@ -102,25 +108,3 @@
         function mostrarResultado(titulo, cor, subtitulo) {
             document.getElementById('bloco-pergunta').style.display = 'none';
             document.getElementById('bloco-quiz').style.display = 'none';
-            document.getElementById('titulo-resultado').innerText = titulo;
-            document.getElementById('titulo-resultado').style.color = cor;
-            document.getElementById('subtitulo-resultado').innerText = subtitulo;
-            document.getElementById('bloco-resultado').style.display = 'block';
-        }
-
-        function reiniciar() {
-            tentativas = 0;
-            perguntaAtual = 0;
-            document.getElementById('audioSim').pause(); document.getElementById('audioSim').currentTime = 0;
-            document.getElementById('audioNao').pause(); document.getElementById('audioNao').currentTime = 0;
-            const btnNao = document.getElementById('btnNao');
-            btnNao.style.position = 'relative'; 
-            btnNao.style.left = 'auto'; btnNao.style.top = 'auto';
-            document.getElementById('bloco-pergunta').style.display = 'block';
-            document.getElementById('bloco-quiz').style.display = 'none';
-            document.getElementById('bloco-resultado').style.display = 'none';
-            if(document.getElementById('sidebar').classList.contains('active')) toggleMenu();
-        }
-    </script>
-</body>
-</html>
