@@ -54,7 +54,6 @@
     </main>
 
     <script>
-        // ADICIONE SUAS PERGUNTAS DO QUIZ AQUI DENTRO DOS COLCHETES:
         const perguntasQuiz = [
             "Escreva a Pergunta 1 aqui",
             "Escreva a Pergunta 2 aqui",
@@ -83,7 +82,6 @@
         }
 
         function iniciarQuiz() {
-            document.getElementById('audioNao').play();
             document.getElementById('bloco-pergunta').style.display = 'none';
             document.getElementById('bloco-quiz').style.display = 'block';
             document.getElementById('texto-quiz').innerText = perguntasQuiz[0];
@@ -94,6 +92,7 @@
             if (perguntaAtual < perguntasQuiz.length) {
                 document.getElementById('texto-quiz').innerText = perguntasQuiz[perguntaAtual];
             } else {
+                document.getElementById('audioNao').play();
                 mostrarResultado("Título Final do Não", "#ffcc00", "Texto final após o quiz.");
             }
         }
