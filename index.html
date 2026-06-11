@@ -2,14 +2,16 @@
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Quiz Especial</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
             font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            /* Desativa o realce de toque padrão no mobile */
+            -webkit-tap-highlight-color: transparent;
         }
 
         body {
@@ -20,6 +22,7 @@
             min-height: 100vh;
             overflow: hidden;
             color: #fff;
+            padding: 20px;
         }
 
         /* Menu Retrátil */
@@ -73,64 +76,76 @@
         /* Card Centralizado */
         .card {
             background: #1f1f2a;
-            padding: 50px 40px;
+            padding: 40px 30px;
             border-radius: 12px;
             box-shadow: 0 20px 50px rgba(0,0,0,0.4);
             text-align: center;
             max-width: 550px;
-            width: 90%;
+            width: 100%;
             border: 1px solid #38384f;
             position: relative;
         }
 
         h1 {
             color: #fff;
-            font-size: 1.8rem;
-            margin-bottom: 35px;
-            line-height: 1.5;
+            font-size: 1.6rem;
+            margin-bottom: 30px;
+            line-height: 1.4;
         }
 
         /* Botões */
         .btn-container {
             display: flex;
             justify-content: center;
-            gap: 25px;
-            height: 60px;
+            gap: 20px;
+            height: 70px; /* Aumentado para acomodar botões maiores no mobile */
             align-items: center;
             position: relative;
         }
 
         .btn {
-            padding: 14px 45px;
+            padding: 16px 35px; /* Mais padding para facilitar o toque */
             font-size: 1.1rem;
             font-weight: 800;
             border: none;
-            border-radius: 4px;
+            border-radius: 8px; /* Bordas um pouco mais arredondadas */
             cursor: pointer;
             text-transform: uppercase;
             transition: background 0.2s, transform 0.1s;
+            touch-action: manipulation; /* Melhora a resposta do toque */
         }
 
         .btn-sim {
             background-color: #e10600;
             color: white;
+            box-shadow: 0 4px 10px rgba(225, 6, 0, 0.2);
         }
 
-        .btn-sim:hover {
-            background-color: #b80500;
-            transform: scale(1.05);
+        .btn-sim:active {
+            transform: scale(0.95);
         }
 
         .btn-nao {
             background-color: #38384f;
             color: #a0a0b8;
-            position: absolute;
             transition: all 0.1s ease;
             z-index: 10;
         }
 
+        /* Classe para o botão fugitivo na última pergunta */
+        .btn-nao.fugitivo {
+            position: absolute;
+        }
+
         .tela-resultado {
             display: none;
+        }
+
+        /* Ajustes para telas bem pequenas */
+        @media (max-width: 360px) {
+            h1 { font-size: 1.4rem; }
+            .btn { padding: 14px 25px; font-size: 1rem; }
+            .btn-container { gap: 10px; }
         }
     </style>
 </head>
@@ -146,12 +161,12 @@
     </nav>
 
     <main class="card">
-        <div id="bloco-pergunta">
-            <h1 id="texto-pergunta">Escreva sua pergunta aqui</h1>
+        <div id="bloco-quiz">
+            <h1 id="texto-pergunta">Pergunta 1 do Quiz</h1>
             
             <div class="btn-container">
-                <button class="btn btn-sim" onclick="clicouSim()">Sim</button>
-                <button class="btn btn-nao" id="btnNao" onmouseover="fugir()" onclick="clicouNao()">Não</button>
+                <button class="btn btn-sim" onclick="respostaSim()">Sim</button>
+                <button class="btn btn-nao" id="btnNao" onclick="respostaNao()">Não</button>
             </div>
         </div>
 
@@ -162,72 +177,120 @@
     </main>
 
     <script>
-        let tentatives = 0;
+        // Configuração das perguntas do seu quiz
+        const perguntas = [
+            "Pergunta 1: Você gosta de surpresas?",
+            "Pergunta 2: Você prefere o dia ou a noite?",
+            "Pergunta Decisiva: Aceita sair comigo?"
+        ];
+
+        let perguntaAtual = 0;
+        let tentativasNao = 0;
+        const LIMITE_TENTATIVAS = 10;
+
+        function atualizarPergunta() {
+            document.getElementById('texto-pergunta').innerText = perguntas[perguntaAtual];
+            
+            const btnNao = document.getElementById('btnNao');
+            // Só adiciona a classe que permite posição absoluta na última pergunta
+            if (perguntaAtual === perguntas.length - 1) {
+                btnNao.classList.add('fugitivo');
+            } else {
+                btnNao.classList.remove('fugitivo');
+                btnNao.style.position = 'static';
+            }
+        }
+
+        // Inicia a primeira pergunta
+        atualizarPergunta();
 
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
         }
 
-        function fugir() {
-            if (tentatívas >= 5) return;
-
-            tentatívas++;
+        function moverBotaoNao() {
             const btnNao = document.getElementById('btnNao');
             
-            const x = Math.random() * (window.innerWidth - btnNao.offsetWidth - 40) + 20;
-            const y = Math.random() * (window.innerHeight - btnNao.offsetHeight - 40) + 20;
+            // Define os limites para o botão não sair da tela
+            // Usamos padding de 20px das bordas
+            const pad = 20;
+            const maxWidth = window.innerWidth - btnNao.offsetWidth - pad;
+            const maxHeight = window.innerHeight - btnNao.offsetHeight - pad;
+            
+            const x = Math.max(pad, Math.random() * maxWidth);
+            const y = Math.max(pad, Math.random() * maxHeight);
             
             btnNao.style.position = 'fixed';
             btnNao.style.left = x + 'px';
             btnNao.style.top = y + 'px';
         }
 
-        function clicouSim() {
-            // Toca a música do Sim
-            document.getElementById('audioSim').play();
-
-            document.getElementById('bloco-pergunta').style.display = 'none';
-            
-            document.getElementById('titulo-resultado').innerText = "Título do Sim";
-            document.getElementById('titulo-resultado').style.color = "#00ff66";
-            document.getElementById('subtitulo-resultado').innerText = "Texto secundário do Sim.";
-            
-            document.getElementById('bloco-resultado').style.display = 'block';
+        function respostaSim() {
+            if (perguntaAtual === perguntas.length - 1) {
+                finalizarQuiz('Sim');
+            } else {
+                proximaPergunta();
+            }
         }
 
-        function clicouNao() {
-            // Toca o áudio do Não
-            document.getElementById('audioNao').play();
+        function respostaNao() {
+            // Se for a última pergunta...
+            if (perguntaAtual === perguntas.length - 1) {
+                // ...e ainda não atingiu o limite de fugas...
+                if (tentativasNao < LIMITE_TENTATIVAS) {
+                    tentativasNao++;
+                    moverBotaoNao(); // ...o botão foge ao invés de aceitar o clique
+                    return;
+                }
+                // Se passou do limite, aceita o clique e finaliza
+                finalizarQuiz('Não');
+            } else {
+                // Nas outras perguntas, avança normalmente
+                proximaPergunta();
+            }
+        }
 
-            document.getElementById('bloco-pergunta').style.display = 'none';
+        function proximaPergunta() {
+            perguntaAtual++;
+            atualizarPergunta();
+        }
+
+        function finalizarQuiz(respostaFinal) {
+            document.getElementById('bloco-quiz').style.display = 'none';
             
-            document.getElementById('titulo-resultado').innerText = "Título do Não";
-            document.getElementById('titulo-resultado').style.color = "#ffcc00";
-            document.getElementById('subtitulo-resultado').innerText = "Texto secundário do Não.";
+            if (respostaFinal === 'Sim') {
+                document.getElementById('audioSim').play();
+                document.getElementById('titulo-resultado').innerText = "Excelente Escolha!";
+                document.getElementById('titulo-resultado').style.color = "#00ff66";
+                document.getElementById('subtitulo-resultado').innerText = "Prepare-se para a Pole Position.";
+            } else {
+                document.getElementById('audioNao').play();
+                document.getElementById('titulo-resultado').innerText = "Bandeira Amarela";
+                document.getElementById('titulo-resultado').style.color = "#ffcc00";
+                document.getElementById('subtitulo-resultado').innerText = "Você insistiu muito, mas o destino final ainda é comigo.";
+            }
             
             document.getElementById('bloco-resultado').style.display = 'block';
         }
 
         function reiniciar() {
-            tentatívas = 0;
+            perguntaAtual = 0;
+            tentativasNao = 0;
             
-            // Pausa e reseta a música do Sim
+            // Pausa e reseta áudios
             const audioSim = document.getElementById('audioSim');
-            audioSim.pause();
-            audioSim.currentTime = 0;
+            audioSim.pause(); audioSim.currentTime = 0;
 
-            // Pausa e reseta o áudio do Não
             const audioNao = document.getElementById('audioNao');
-            audioNao.pause();
-            audioNao.currentTime = 0;
+            audioNao.pause(); audioNao.currentTime = 0;
 
             const btnNao = document.getElementById('btnNao');
-            btnNao.style.position = 'absolute';
-            btnNao.style.left = 'auto';
-            btnNao.style.top = 'auto';
+            btnNao.style.position = 'static';
             
-            document.getElementById('bloco-pergunta').style.display = 'block';
+            atualizarPergunta();
+            
+            document.getElementById('bloco-quiz').style.display = 'block';
             document.getElementById('bloco-resultado').style.display = 'none';
             toggleMenu();
         }
