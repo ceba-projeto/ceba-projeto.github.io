@@ -14,8 +14,11 @@
 
         body {
             background-color: #f9f0f6;
-            color: #333;
-            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
         }
 
         /* Menu Retrátil */
@@ -64,70 +67,60 @@
             color: #ff4d79;
         }
 
-        /* Conteúdo Principal */
-        .container {
-            max-width: 800px;
-            margin: 80px auto;
-            padding: 20px;
-            text-align: center;
-        }
-
+        /* Card Centralizado */
         .card {
             background: white;
-            padding: 40px 30px;
-            border-radius: 16px;
+            padding: 50px 40px;
+            border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            text-align: center;
+            max-width: 500px;
+            width: 90%;
         }
 
         h1 {
             color: #ff4d79;
-            font-size: 2.5rem;
-            margin-bottom: 20px;
+            font-size: 2rem;
+            margin-bottom: 35px;
+            line-height: 1.4;
         }
 
-        p {
-            font-size: 1.1rem;
-            line-height: 1.8;
-            color: #555;
-            margin-bottom: 30px;
+        /* Botões */
+        .btn-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
         }
 
-        /* Área de Mensagem Interativa */
-        .input-group {
-            margin-top: 30px;
-        }
-
-        textarea {
-            width: 100%;
-            height: 100px;
-            padding: 15px;
-            border: 2px solid #ffd6e0;
-            border-radius: 10px;
-            resize: none;
-            font-size: 1rem;
-            outline: none;
-            transition: border-color 0.3s;
-        }
-
-        textarea:focus {
-            border-color: #ff4d79;
-        }
-
-        .send-btn {
-            background: #ff4d79;
-            color: white;
-            border: none;
-            padding: 12px 30px;
-            font-size: 1rem;
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2rem;
             font-weight: bold;
-            border-radius: 25px;
-            margin-top: 15px;
+            border: none;
+            border-radius: 30px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: transform 0.2s, background 0.2s;
+            min-width: 120px;
         }
 
-        .send-btn:hover {
-            background: #e03a65;
+        .btn-sim {
+            background-color: #ff4d79;
+            color: white;
+        }
+
+        .btn-sim:hover {
+            background-color: #e03a65;
+            transform: scale(1.05);
+        }
+
+        .btn-nao {
+            background-color: #e0e0e0;
+            color: #555;
+        }
+
+        .btn-nao:hover {
+            background-color: #d5d5d5;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -136,19 +129,15 @@
     <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
 
     <nav class="sidebar" id="sidebar">
-        <a href="#inicio" onclick="toggleMenu()">Início</a>
-        <a href="#mensagem" onclick="toggleMenu()">Enviar Mensagem</a>
+        <a href="#" onclick="toggleMenu()">Início</a>
     </nav>
 
-    <main class="container" id="inicio">
-        <div class="card">
-            <h1>Para Giovana</h1>
-            <p>Escreva aqui o seu texto personalizado para ela. Seja direto, sincero e evite clichês genéricos. Foque no que torna a sua consideração por ela real e relevante.</p>
-            
-            <div class="input-group" id="mensagem">
-                <textarea id="userMessage" placeholder="Escreva uma resposta ou mensagem aqui..."></textarea>
-                <button class="send-btn" onclick="enviarMensagem()">Enviar Mensagem</button>
-            </div>
+    <main class="card">
+        <h1 id="pergunta">Giovana, aqui vai estar a pergunta que você vai criar. Tudo bem?</h1>
+        
+        <div class="btn-container">
+            <button class="btn btn-sim" onclick="resposta('Sim')">Sim</button>
+            <button class="btn btn-nao" onclick="resposta('Não')">Não</button>
         </div>
     </main>
 
@@ -158,16 +147,10 @@
             sidebar.classList.toggle('active');
         }
 
-        function enviarMensagem() {
-            const mensagem = document.getElementById('userMessage').value;
-            if (!mensagem.trim()) {
-                alert('Digite uma mensagem antes de enviar.');
-                return;
-            }
-            
-            // Configuração para redirecionar o texto direto para o seu WhatsApp
-            const seuNumero = "5522999999999"; // Substitua pelo seu número com DDD (apenas números)
-            const textoFormatado = encodeURIComponent("Mensagem da Giovana pelo site: " + mensagem);
+        function resposta(opcao) {
+            // Insira seu número com DDD e o código do país (55)
+            const seuNumero = "5522999999999"; 
+            const textoFormatado = encodeURIComponent("Oi! Respondi '" + opcao + "' no seu site.");
             window.open(`https://wa.me/${seuNumero}?text=${textoFormatado}`, '_blank');
         }
     </script>
