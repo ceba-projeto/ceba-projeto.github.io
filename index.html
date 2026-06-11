@@ -3,38 +3,41 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Para Giovana</title>
+    <title>Pole Position</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
-            background-color: #f9f0f6;
+            background: linear-gradient(135deg, #15151e 0%, #2b2b36 100%);
             display: flex;
             justify-content: center;
             align-items: center;
             min-height: 100vh;
             overflow: hidden;
+            color: #fff;
         }
 
-        /* Menu Retrátil */
+        /* Menu Retrátil Temático */
         .menu-btn {
             position: fixed;
             top: 20px;
             right: 20px;
-            background: #ff4d79;
+            background: #e10600;
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 12px 20px;
+            border-radius: 4px;
             cursor: pointer;
             z-index: 100;
             font-weight: bold;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(225, 6, 0, 0.4);
+            text-transform: uppercase;
         }
 
         .sidebar {
@@ -43,11 +46,12 @@
             right: -250px;
             width: 250px;
             height: 100%;
-            background: #fff;
-            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-            transition: right 0.3s ease;
+            background: #1f1f2a;
+            box-shadow: -5px 0 20px rgba(0,0,0,0.5);
+            transition: right 0.3s cubic-bezier(0.77, 0, 0.175, 1);
             padding: 80px 20px 20px 20px;
             z-index: 99;
+            border-left: 3px solid #e10600;
         }
 
         .sidebar.active {
@@ -56,88 +60,132 @@
 
         .sidebar a {
             display: block;
-            color: #333;
+            color: #eceff1;
             text-decoration: none;
             padding: 15px 10px;
-            border-bottom: 1px solid #eee;
-            font-weight: 500;
+            border-bottom: 1px solid #2b2b36;
+            font-weight: 600;
+            letter-spacing: 0.5px;
         }
 
         .sidebar a:hover {
-            color: #ff4d79;
+            color: #e10600;
+            background: rgba(225, 6, 0, 0.05);
         }
 
-        /* Card Centralizado */
+        /* Card de Corrida */
         .card {
-            background: white;
+            background: #1f1f2a;
             padding: 50px 40px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            border-radius: 12px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
             text-align: center;
-            max-width: 500px;
+            max-width: 550px;
             width: 90%;
+            border: 1px solid #38384f;
+            position: relative;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 6px;
+            background: repeating-linear-gradient(45deg, #000, #000 10px, #fff 10px, #fff 20px);
+            border-top-left-radius: 12px;
+            border-top-right-radius: 12px;
         }
 
         h1 {
-            color: #ff4d79;
-            font-size: 2rem;
+            color: #fff;
+            font-size: 1.8rem;
             margin-bottom: 35px;
-            line-height: 1.4;
+            line-height: 1.5;
+            font-weight: 700;
+        }
+
+        span.highlight {
+            color: #e10600;
+            position: relative;
         }
 
         /* Botões */
         .btn-container {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 25px;
+            height: 60px;
+            align-items: center;
+            position: relative;
         }
 
         .btn {
-            padding: 15px 40px;
-            font-size: 1.2rem;
-            font-weight: bold;
+            padding: 14px 45px;
+            font-size: 1.1rem;
+            font-weight: 800;
             border: none;
-            border-radius: 30px;
+            border-radius: 4px;
             cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-            min-width: 120px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: background 0.2s, transform 0.1s;
         }
 
         .btn-sim {
-            background-color: #ff4d79;
+            background-color: #e10600;
             color: white;
+            box-shadow: 0 4px 15px rgba(225, 6, 0, 0.3);
         }
 
         .btn-sim:hover {
-            background-color: #e03a65;
+            background-color: #b80500;
             transform: scale(1.05);
         }
 
         .btn-nao {
-            background-color: #e0e0e0;
-            color: #555;
+            background-color: #38384f;
+            color: #a0a0b8;
+            position: absolute;
+            transition: all 0.1s ease;
+            z-index: 10;
         }
 
-        .btn-nao:hover {
-            background-color: #d5d5d5;
-            transform: scale(1.05);
+        /* Tela de Vitória */
+        .vitoria {
+            display: none;
+        }
+
+        .vitoria h2 {
+            color: #00ff66;
+            font-size: 2.2rem;
+            margin-bottom: 15px;
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
-    <button class="menu-btn" onclick="toggleMenu()">☰ Menu</button>
+    <button class="menu-btn" onclick="toggleMenu()">🏁 Box</button>
 
     <nav class="sidebar" id="sidebar">
-        <a href="#" onclick="toggleMenu()">Início</a>
+        <a href="#" onclick="reiniciar()">Reiniciar</a>
     </nav>
 
-    <main class="card">
-        <h1 id="pergunta">Giovana, aqui vai estar a pergunta que você vai criar. Tudo bem?</h1>
-        
-        <div class="btn-container">
-            <button class="btn btn-sim" onclick="resposta('Sim')">Sim</button>
-            <button class="btn btn-nao" onclick="resposta('Não')">Não</button>
+    <main class="card" id="conteudo-card">
+        <div class="pergunta-f1" id="bloco-pergunta">
+            <h1>Giovana, o <span class="highlight">Kimi Antonelli</span> pode até ser rápido, mas eu fui mais rápido em me apaixonar por você. Aceita dar uma volta comigo?</h1>
+            
+            <div class="btn-container">
+                <button class="btn btn-sim" onclick="aceitou()">Sim</button>
+                <button class="btn btn-nao" id="btnNao" onmouseover="furgir()" onclick="furgir()">Não</button>
+            </div>
+        </div>
+
+        <div class="vitoria" id="bloco-vitoria">
+            <h2>P1! 🏆</h2>
+            <p>Escolha cirúrgica. Destino traçado na pole position!</p>
         </div>
     </main>
 
@@ -147,11 +195,33 @@
             sidebar.classList.toggle('active');
         }
 
-        function resposta(opcao) {
-            // Insira seu número com DDD e o código do país (55)
-            const seuNumero = "5522999999999"; 
-            const textoFormatado = encodeURIComponent("Oi! Respondi '" + opcao + "' no seu site.");
-            window.open(`https://wa.me/${seuNumero}?text=${textoFormatado}`, '_blank');
+        function furgir() {
+            const btnNao = document.getElementById('btnNao');
+            
+            // Limita o movimento dentro da área visível da tela
+            const x = Math.random() * (window.innerWidth - btnNao.offsetWidth - 40) + 20;
+            const y = Math.random() * (window.innerHeight - btnNao.offsetHeight - 40) + 20;
+            
+            // Move o botão para coordenadas absolutas da tela para garantir que ele escape
+            btnNao.style.position = 'fixed';
+            btnNao.style.left = x + 'px';
+            btnNao.style.top = y + 'px';
+        }
+
+        function aceitou() {
+            document.getElementById('bloco-pergunta').style.display = 'none';
+            document.getElementById('bloco-vitoria').style.display = 'block';
+        }
+
+        function reiniciar() {
+            const btnNao = document.getElementById('btnNao');
+            btnNao.style.position = 'absolute';
+            btnNao.style.left = 'auto';
+            btnNao.style.top = 'auto';
+            
+            document.getElementById('bloco-pergunta').style.display = 'block';
+            document.getElementById('bloco-vitoria').style.display = 'none';
+            toggleMenu();
         }
     </script>
 
