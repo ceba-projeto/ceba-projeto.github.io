@@ -8,13 +8,11 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
         body { background: linear-gradient(135deg, #15151e 0%, #2b2b36 100%); display: flex; justify-content: center; align-items: center; min-height: 100vh; overflow: hidden; color: #fff; }
         
-        /* Menu */
         .menu-btn { position: fixed; top: 20px; right: 20px; background: #e10600; color: white; border: none; padding: 12px 20px; border-radius: 4px; cursor: pointer; z-index: 100; font-weight: bold; text-transform: uppercase; }
         .sidebar { position: fixed; top: 0; right: -250px; width: 250px; height: 100%; background: #1f1f2a; transition: right 0.3s ease; padding: 80px 20px; z-index: 99; border-left: 3px solid #e10600; }
         .sidebar.active { right: 0; }
         .sidebar a { display: block; color: #eceff1; text-decoration: none; padding: 15px 10px; border-bottom: 1px solid #2b2b36; font-weight: 600; }
 
-        /* Card */
         .card { background: #1f1f2a; padding: 50px 40px; border-radius: 12px; box-shadow: 0 20px 50px rgba(0,0,0,0.4); text-align: center; max-width: 550px; width: 90%; border: 1px solid #38384f; position: relative; }
         h1 { color: #fff; font-size: 1.8rem; margin-bottom: 35px; }
 
@@ -40,7 +38,7 @@
             <h1>Escreva sua pergunta inicial aqui</h1>
             <div class="btn-container">
                 <button class="btn btn-sim" onclick="clicouSimInicial()">Sim</button>
-                <button class="btn btn-nao" id="btnNao" onmouseover="fugir()" onclick="iniciarQuiz()">Não</button>
+                <button class="btn btn-nao" id="btnNao" onclick="fugir()">Não</button>
             </div>
         </div>
 
@@ -59,28 +57,23 @@
     </main>
 
     <script>
-        const perguntasQuiz = [
-            "Pergunta 1 do Quiz",
-            "Pergunta 2 do Quiz",
-            "Pergunta 3 do Quiz"
-        ];
-
+        const perguntasQuiz = ["Pergunta 1", "Pergunta 2", "Pergunta 3"];
         let tentativas = 0;
         let perguntaAtual = 0;
 
         function toggleMenu() { document.getElementById('sidebar').classList.toggle('active'); }
 
         function fugir() {
-            if (tentativas >= 10) return;
+            if (tentativas >= 10) {
+                // Quando cansar de fugir, inicia o quiz
+                iniciarQuiz();
+                return;
+            }
             tentativas++;
             const btnNao = document.getElementById('btnNao');
-            
-            // Só muda para fixed quando começar a fugir
             btnNao.style.position = 'fixed'; 
-            
             const x = Math.random() * (window.innerWidth - btnNao.offsetWidth - 40) + 20;
             const y = Math.random() * (window.innerHeight - btnNao.offsetHeight - 40) + 20;
-            
             btnNao.style.left = x + 'px';
             btnNao.style.top = y + 'px';
         }
@@ -101,7 +94,6 @@
             if (perguntaAtual < perguntasQuiz.length) {
                 document.getElementById('texto-quiz').innerText = perguntasQuiz[perguntaAtual];
             } else {
-                // Toca a música apenas no final do quiz
                 document.getElementById('audioNao').play();
                 mostrarResultado("Fim do Quiz", "#ffcc00", "Quiz concluído.");
             }
@@ -119,18 +111,14 @@
         function reiniciar() {
             tentativas = 0;
             perguntaAtual = 0;
-            
-            const audioSim = document.getElementById('audioSim'); audioSim.pause(); audioSim.currentTime = 0;
-            const audioNao = document.getElementById('audioNao'); audioNao.pause(); audioNao.currentTime = 0;
-
+            document.getElementById('audioSim').pause(); document.getElementById('audioSim').currentTime = 0;
+            document.getElementById('audioNao').pause(); document.getElementById('audioNao').currentTime = 0;
             const btnNao = document.getElementById('btnNao');
-            btnNao.style.position = 'relative'; // Volta para a posição original
+            btnNao.style.position = 'relative'; 
             btnNao.style.left = 'auto'; btnNao.style.top = 'auto';
-            
             document.getElementById('bloco-pergunta').style.display = 'block';
             document.getElementById('bloco-quiz').style.display = 'none';
             document.getElementById('bloco-resultado').style.display = 'none';
-            
             if(document.getElementById('sidebar').classList.contains('active')) toggleMenu();
         }
     </script>
