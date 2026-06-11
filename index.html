@@ -136,6 +136,8 @@
 </head>
 <body>
 
+    <audio id="meuAudio" src="Legião Urbana · Tempo perdido(MP3_160K).mp3" preload="auto"></audio>
+
     <button class="menu-btn" onclick="toggleMenu()">Menu</button>
 
     <nav class="sidebar" id="sidebar">
@@ -181,6 +183,9 @@
         }
 
         function clicouSim() {
+            // Toca a música ao clicar
+            document.getElementById('meuAudio').play();
+
             document.getElementById('bloco-pergunta').style.display = 'none';
             
             // Defina o que aparece quando clica SIM aqui
@@ -192,6 +197,9 @@
         }
 
         function clicouNao() {
+            // Toca a música ao clicar também
+            document.getElementById('meuAudio').play();
+
             document.getElementById('bloco-pergunta').style.display = 'none';
             
             // Defina o que aparece quando clica NÃO aqui
@@ -204,6 +212,12 @@
 
         function reiniciar() {
             tentativas = 0;
+            
+            // Pausa a música e reseta para o início se usar o reiniciar
+            const audio = document.getElementById('meuAudio');
+            audio.pause();
+            audio.currentTime = 0;
+
             const btnNao = document.getElementById('btnNao');
             btnNao.style.position = 'absolute';
             btnNao.style.left = 'auto';
