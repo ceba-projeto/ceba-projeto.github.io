@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pole Position</title>
+    <title>Site</title>
     <style>
         * {
             margin: 0;
@@ -22,7 +22,7 @@
             color: #fff;
         }
 
-        /* Menu Retrátil Temático */
+        /* Menu Retrátil */
         .menu-btn {
             position: fixed;
             top: 20px;
@@ -35,9 +35,8 @@
             cursor: pointer;
             z-index: 100;
             font-weight: bold;
-            letter-spacing: 1px;
-            box-shadow: 0 4px 15px rgba(225, 6, 0, 0.4);
             text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(225, 6, 0, 0.4);
         }
 
         .sidebar {
@@ -48,7 +47,7 @@
             height: 100%;
             background: #1f1f2a;
             box-shadow: -5px 0 20px rgba(0,0,0,0.5);
-            transition: right 0.3s cubic-bezier(0.77, 0, 0.175, 1);
+            transition: right 0.3s ease;
             padding: 80px 20px 20px 20px;
             z-index: 99;
             border-left: 3px solid #e10600;
@@ -65,15 +64,13 @@
             padding: 15px 10px;
             border-bottom: 1px solid #2b2b36;
             font-weight: 600;
-            letter-spacing: 0.5px;
         }
 
         .sidebar a:hover {
             color: #e10600;
-            background: rgba(225, 6, 0, 0.05);
         }
 
-        /* Card de Corrida */
+        /* Card Centralizado */
         .card {
             background: #1f1f2a;
             padding: 50px 40px;
@@ -86,29 +83,11 @@
             position: relative;
         }
 
-        .card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 6px;
-            background: repeating-linear-gradient(45deg, #000, #000 10px, #fff 10px, #fff 20px);
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-        }
-
         h1 {
             color: #fff;
             font-size: 1.8rem;
             margin-bottom: 35px;
             line-height: 1.5;
-            font-weight: 700;
-        }
-
-        span.highlight {
-            color: #e10600;
-            position: relative;
         }
 
         /* Botões */
@@ -129,14 +108,12 @@
             border-radius: 4px;
             cursor: pointer;
             text-transform: uppercase;
-            letter-spacing: 1px;
             transition: background 0.2s, transform 0.1s;
         }
 
         .btn-sim {
             background-color: #e10600;
             color: white;
-            box-shadow: 0 4px 15px rgba(225, 6, 0, 0.3);
         }
 
         .btn-sim:hover {
@@ -152,75 +129,88 @@
             z-index: 10;
         }
 
-        /* Tela de Vitória */
-        .vitoria {
+        .tela-resultado {
             display: none;
-        }
-
-        .vitoria h2 {
-            color: #00ff66;
-            font-size: 2.2rem;
-            margin-bottom: 15px;
-            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
-    <button class="menu-btn" onclick="toggleMenu()">🏁 Box</button>
+    <button class="menu-btn" onclick="toggleMenu()">Menu</button>
 
     <nav class="sidebar" id="sidebar">
         <a href="#" onclick="reiniciar()">Reiniciar</a>
     </nav>
 
-    <main class="card" id="conteudo-card">
-        <div class="pergunta-f1" id="bloco-pergunta">
-            <h1>Giovana, o <span class="highlight">Kimi Antonelli</span> pode até ser rápido, mas eu fui mais rápido em me apaixonar por você. Aceita dar uma volta comigo?</h1>
+    <main class="card">
+        <div id="bloco-pergunta">
+            <h1 id="texto-pergunta">Escreva sua pergunta aqui</h1>
             
             <div class="btn-container">
-                <button class="btn btn-sim" onclick="aceitou()">Sim</button>
-                <button class="btn btn-nao" id="btnNao" onmouseover="furgir()" onclick="furgir()">Não</button>
+                <button class="btn btn-sim" onclick="clicouSim()">Sim</button>
+                <button class="btn btn-nao" id="btnNao" onmouseover="fugir()" onclick="clicouNao()">Não</button>
             </div>
         </div>
 
-        <div class="vitoria" id="bloco-vitoria">
-            <h2>P1! 🏆</h2>
-            <p>Escolha cirúrgica. Destino traçado na pole position!</p>
+        <div class="tela-resultado" id="bloco-resultado">
+            <h2 id="titulo-resultado" style="font-size: 2.2rem; margin-bottom: 15px; text-transform: uppercase;"></h2>
+            <p id="subtitulo-resultado"></p>
         </div>
     </main>
 
     <script>
+        let tentativas = 0;
+
         function toggleMenu() {
             const sidebar = document.getElementById('sidebar');
             sidebar.classList.toggle('active');
         }
 
-        function furgir() {
+        function fugir() {
+            if (tentativas >= 5) return;
+
+            tentativas++;
             const btnNao = document.getElementById('btnNao');
             
-            // Limita o movimento dentro da área visível da tela
             const x = Math.random() * (window.innerWidth - btnNao.offsetWidth - 40) + 20;
             const y = Math.random() * (window.innerHeight - btnNao.offsetHeight - 40) + 20;
             
-            // Move o botão para coordenadas absolutas da tela para garantir que ele escape
             btnNao.style.position = 'fixed';
             btnNao.style.left = x + 'px';
             btnNao.style.top = y + 'px';
         }
 
-        function aceitou() {
+        function clicouSim() {
             document.getElementById('bloco-pergunta').style.display = 'none';
-            document.getElementById('bloco-vitoria').style.display = 'block';
+            
+            // Defina o que aparece quando clica SIM aqui
+            document.getElementById('titulo-resultado').innerText = "Título do Sim";
+            document.getElementById('titulo-resultado').style.color = "#00ff66";
+            document.getElementById('subtitulo-resultado').innerText = "Texto secundário do Sim.";
+            
+            document.getElementById('bloco-resultado').style.display = 'block';
+        }
+
+        function clicouNao() {
+            document.getElementById('bloco-pergunta').style.display = 'none';
+            
+            // Defina o que aparece quando clica NÃO aqui
+            document.getElementById('titulo-resultado').innerText = "Título do Não";
+            document.getElementById('titulo-resultado').style.color = "#ffcc00";
+            document.getElementById('subtitulo-resultado').innerText = "Texto secundário do Não.";
+            
+            document.getElementById('bloco-resultado').style.display = 'block';
         }
 
         function reiniciar() {
+            tentativas = 0;
             const btnNao = document.getElementById('btnNao');
             btnNao.style.position = 'absolute';
             btnNao.style.left = 'auto';
             btnNao.style.top = 'auto';
             
             document.getElementById('bloco-pergunta').style.display = 'block';
-            document.getElementById('bloco-vitoria').style.display = 'none';
+            document.getElementById('bloco-resultado').style.display = 'none';
             toggleMenu();
         }
     </script>
